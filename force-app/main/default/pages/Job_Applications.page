@@ -2,9 +2,11 @@
   <apex:pageBlock title="Job applications">
     <apex:pageblockTable value="{!JobApplications}" var="japp">
       <apex:column value="{!japp.Name}" />
-      <apex:column value="{!japp.Candidate__c}" />
-      <apex:column value="{!japp.Position__c}" />
       <apex:column value="{!japp.Status__c}" />
+      <apex:column value="{!japp.Candidate__c}" />
+      <apex:column value="{!japp.Candidate__r.Email__c}"/>
+      <apex:column value="{!japp.Position__c}" />
+      <apex:column value="{!japp.Position__r.Status__c}"/>
     </apex:pageblockTable>
   </apex:pageBlock>
 </apex:page>
