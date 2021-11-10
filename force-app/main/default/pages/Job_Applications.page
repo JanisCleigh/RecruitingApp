@@ -1,6 +1,10 @@
-<apex:page >
-  <!-- Begin Default Content REMOVE THIS -->
-  <h1>Congratulations</h1>
-  This is your new Page
-  <!-- End Default Content REMOVE THIS -->
+<apex:page standardController="Job_Application__c" recordSetVar="JobApplications">
+  <apex:pageBlock title="Job applications">
+    <apex:pageblockTable value="{!JobApplications}" var="japp">
+      <apex:column value="{!japp.Name}" />
+      <apex:column value="{!japp.Candidate__c}" />
+      <apex:column value="{!japp.Position__c}" />
+      <apex:column value="{!japp.Status__c}" />
+    </apex:pageblockTable>
+  </apex:pageBlock>
 </apex:page>
