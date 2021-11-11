@@ -2,13 +2,15 @@
   <apex:pageBlock title="Job applications">
     <apex:pageblockTable value="{!JobApplications}" var="japp">
       <apex:column headerValue="JobApplication's number">
-          <apex:outputLink value="/{!japp.Id}">{!japp.name}</apex:outputLink>      
+        <apex:outputLink value="/{!japp.Id}">{!japp.name}</apex:outputLink>
       </apex:column>
       <apex:column value="{!japp.Status__c}" />
       <apex:column value="{!japp.Candidate__c}" />
-      <apex:column value="{!japp.Candidate__r.Email__c}"/>
+      <apex:column value="{!japp.Candidate__r.Email__c}" />
       <apex:column value="{!japp.Position__c}" />
-      <apex:column value="{!japp.Position__r.Status__c}"/>
+      <apex:column headerValue="Position's status">
+        {!japp.Position__r.Status__c}
+      </apex:column>
     </apex:pageblockTable>
   </apex:pageBlock>
 </apex:page>
