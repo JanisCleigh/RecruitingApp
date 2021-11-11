@@ -1,7 +1,9 @@
 <apex:page standardController="Job_Application__c" recordSetVar="JobApplications">
   <apex:pageBlock title="Job applications">
     <apex:pageblockTable value="{!JobApplications}" var="japp">
-      <apex:column value="{!japp.Name}" />
+      <apex:column headerValue="JobApplication's number">
+          <apex:outputLink value="/{!japp.Id}">{!japp.name}</apex:outputLink>      
+      </apex:column>
       <apex:column value="{!japp.Status__c}" />
       <apex:column value="{!japp.Candidate__c}" />
       <apex:column value="{!japp.Candidate__r.Email__c}"/>
