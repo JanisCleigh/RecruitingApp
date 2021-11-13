@@ -1,0 +1,16 @@
+<apex:page controller="PositionsListController">
+    <apex:form >
+        <apex:pageBlock title="Positions" id="positions_list">
+            <apex:pageBlockTable value="{!positions}" var="pos">
+                <apex:column headerValue="Name">
+        			<apex:outputLink value="/{!pos.Id}">{!pos.name}</apex:outputLink>
+      			</apex:column>
+                <apex:column value="{!pos.Status__c}"/>
+                <apex:column value="{!pos.Max_Salary__c}"/>
+                <apex:column value="{!pos.Min_Salary__c}"/>
+                <apex:column value="{!pos.Open_Date__c}"/>
+                <apex:column value="{!pos.Closing_Date__c}"/>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
