@@ -3,15 +3,15 @@
         <apex:pageBlock title="Positions" id="positions_list">
             Select:
             <apex:selectList value="{!selectedStatus}" size="1" multiselect="false">
-                <apex:selectOption itemValue="" itemlabel="--None--" />
-                <apex:selectOption itemValue="All" itemlabel="All" />
-                <apex:selectOption itemValue="Open" itemlabel="Open" />
-                <apex:selectOption itemValue="Closed" itemlabel="Closed" />
-                <apex:selectOption itemValue="Pending" itemlabel="Pending" />
-                <apex:actionSupport event="onchange" action="{!changeStatus}" reRender="pbt	" />
+                <apex:selectOption itemValue="_%" itemLabel="All" />
+                <apex:selectOptions value="{!PosStatus}" />
+                <apex:actionSupport event="onchange" action="{!changeStatus}" reRender="positions_list" />
             </apex:selectList>
             <apex:pageBlockButtons>
                 <apex:commandButton action="{!save}" value="Save" />
+                <h1>
+                    <apex:messages />
+                </h1>
             </apex:pageBlockButtons>
             <apex:pageBlockTable value="{!positions}" var="pos" id="pbt">
                 <apex:column headerValue="Name">
