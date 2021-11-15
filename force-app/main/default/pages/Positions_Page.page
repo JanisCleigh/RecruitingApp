@@ -1,23 +1,21 @@
-<apex:page controller="PositionsListController">
+<apex:page controller="PositionsListController" id="plc">
     <apex:form id="frm">
-        <apex:pageBlock title="Positions" id="positions_list">
-            Select:
-            <apex:selectList value="{!selectedStatus}" size="1" multiselect="false">
-                <apex:selectOption itemValue="_%" itemLabel="All" />
-                <apex:selectOptions value="{!PosStatus}" />
+       <apex:pageBlock title="Positions" id="positions_list">
+       		<apex:pageMessages/>
+           Select: 
+          <apex:selectList value="{!selectedStatus}" size="1" multiselect="false" >
+                <apex:selectOption itemValue="_%" itemLabel="All" id="all" />
+                <apex:selectOptions value="{!PosStatus}"/>
                 <apex:actionSupport event="onchange" action="{!changeStatus}" reRender="positions_list" />
-            </apex:selectList>
-            <apex:pageBlockButtons>
-                <apex:commandButton action="{!save}" value="Save" />
-                <h1>
-                    <apex:messages />
-                </h1>
+          </apex:selectList>
+           <apex:pageBlockButtons >
+             <apex:commandButton action="{!save}" value="Save" />
             </apex:pageBlockButtons>
             <apex:pageBlockTable value="{!positions}" var="pos" id="pbt">
                 <apex:column headerValue="Name">
                     <apex:outputLink value="/{!pos.Id}">{!pos.name}</apex:outputLink>
                 </apex:column>
-                <apex:column>
+                <apex:column >
                     <apex:inputField value="{!pos.Status__c}" />
                 </apex:column>
                 <apex:column value="{!pos.Max_Salary__c}" />
@@ -26,5 +24,5 @@
                 <apex:column value="{!pos.Closing_Date__c}" />
             </apex:pageBlockTable>
         </apex:pageBlock>
-    </apex:form>
+   </apex:form>
 </apex:page>
