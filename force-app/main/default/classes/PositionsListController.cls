@@ -26,11 +26,10 @@ public with sharing class PositionsListController {
              Open_Date__c, Closing_Date__c FROM Position__c WHERE Status__c LIKE :selectedStatus];
     }
        
-    public PageReference save() {
+    public void save() {
     	update positions;
         ApexPages.addMessage(new ApexPages.message(ApexPages.severity.CONFIRM,'Saved successfully!'));
      	selectedStatus = '_%';
         getPositions();
-        return null;
-     }
+    }
 }
