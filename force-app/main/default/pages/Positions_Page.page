@@ -9,7 +9,7 @@
                 <apex:actionSupport event="onchange" action="{!changeStatus}" reRender="positions_list" />
           </apex:selectList>
            <apex:pageBlockButtons >
-             <apex:commandButton action="{!save}" value="Save" reRender="position_list" />
+             <apex:commandButton action="{!save}" value="Save"/>
             </apex:pageBlockButtons>
             <apex:pageBlockTable value="{!positions}" var="pos" id="pbt">
                 <apex:column headerValue="Name">
