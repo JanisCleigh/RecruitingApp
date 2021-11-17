@@ -1,5 +1,5 @@
 @IsTest
-private class testPositionsListController {
+private class PositionsListControllerTest {
     
     @TestSetup 
     static void setup(){
@@ -18,7 +18,7 @@ private class testPositionsListController {
 	}
     
   	@IsTest
-    static void testGetPositions() {
+    static void GetPositionsTest() {
                
         PositionsListController pageController = new PositionsListController();
         System.assertEquals(5, pageController.positions.size());
@@ -28,7 +28,7 @@ private class testPositionsListController {
     }
     
     @IsTest
-    static void testOnChangeOpen() {
+    static void OnChangeOpenTest() {
         PositionsListController pageController = new PositionsListController();
       	pageController.selectedStatus = 'Open';
         pageController.changeStatus();
@@ -38,14 +38,14 @@ private class testPositionsListController {
         System.assertEquals(allPositions, pageController.positions);
 }
     @IsTest
-    static void TestGetPosStatus(){
+    static void GetPosStatusTest(){
       PositionsListController pageController = new PositionsListController();
       List <SelectOption> soList = pageController.getPosStatus();
       List<Schema.PicklistEntry> ple = Position__c.Status__c.getDescribe().getPickListValues();
       System.assertEquals(ple.size(), soList.size());
 }
      @IsTest
-    static void testSave(){
+    static void SaveTest(){
       PositionsListController pageController = new PositionsListController();
       pageController.selectedStatus = 'Open';
       pageController.changeStatus();
@@ -54,7 +54,7 @@ private class testPositionsListController {
       }
       pageController.save();
       System.assertEquals(5, pageController.positions.size());
-      List <Position__c> OpenPositionsList = [SELECT Id, Name, Status__c, Max_Salary__c, Min_Salary__c, 
+      List <Position__c> openPositionsList = [SELECT Id, Name, Status__c, Max_Salary__c, Min_Salary__c, 
            Open_Date__c, Closing_Date__c FROM Position__c WHERE Status__c = 'Closed'];
            System.assertEquals(3, OpenPositionsList.size());
            
