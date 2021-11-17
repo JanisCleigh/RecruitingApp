@@ -19,15 +19,12 @@ private class testPositionsListController {
     
   	@IsTest
     static void testGetPositions() {
-       
-        Test.startTest();
+               
         PositionsListController pageController = new PositionsListController();
-        List <Position__c> positions = new List <Position__c>();
-        Test.stopTest();
         System.assertEquals(5, pageController.positions.size());
         List <Position__c> allPositions = [SELECT Id, Name, Status__c, Max_Salary__c, Min_Salary__c, 
              Open_Date__c, Closing_Date__c FROM Position__c];
-        System.assertEquals(pageController.positions, allPositions);
+        System.assertEquals(allPositions, pageController.positions);
     }
     
     @IsTest
@@ -35,14 +32,32 @@ private class testPositionsListController {
         PositionsListController pageController = new PositionsListController();
       	pageController.selectedStatus = 'Open';
         pageController.changeStatus();
-       System.assertEquals(2, pageController.positions.size());
+        System.assertEquals(2, pageController.positions.size());
         List <Position__c> allPositions = [SELECT Name, Status__c, Max_Salary__c, Min_Salary__c, 
-             Open_Date__c, Closing_Date__c FROM Position__c where Status__c LIKE 'Open'];
-        System.assertEquals(pageController.positions, allPositions);
+             Open_Date__c, Closing_Date__c FROM Position__c WHERE Status__c LIKE 'Open'];
+        System.assertEquals(allPositions, pageController.positions);
 }
     @IsTest
-    static void testGetPosStatus(){
-        
+    static void TestGetPosStatus(){
+      PositionsListController pageController = new PositionsListController();
+      List <SelectOption> soList = pageController.getPosStatus();
+      List<Schema.PicklistEntry> ple = Position__c.Status__c.getDescribe().getPickListValues();
+      System.assertEquals(ple.size(), soList.size());
+}
+     @IsTest
+    static void testSave(){
+      PositionsListController pageController = new PositionsListController();
+      pageController.selectedStatus = 'Open';
+      pageController.changeStatus();
+        for(Position__c pos : pageController.positions){
+            pos.Status__c = 'Closed';
+      }
+      pageController.save();
+      System.assertEquals(5, pageController.positions.size());
+      List <Position__c> OpenPositionsList = [SELECT Id, Name, Status__c, Max_Salary__c, Min_Salary__c, 
+           Open_Date__c, Closing_Date__c FROM Position__c WHERE Status__c = 'Closed'];
+           System.assertEquals(3, OpenPositionsList.size());
+           
     }
-   
+    
 }
