@@ -1,0 +1,22 @@
+SELECT
+    Name,
+    Status__c,
+    Position__r.Name,
+    Position__r.Status__c,
+    Candidate__r.Name,
+    Candidate__r.Email__c,
+    Owner.Name,
+    CreatedDate,
+    (
+        SELECT
+            Name,
+            Stage_name__c,
+            Grade__c
+        FROM
+            Reviews__r
+    )
+FROM
+    Job_Application__c
+WHERE
+    CreatedDate = THIS_WEEK
+    AND Owner.Profile.Name = 'Recruiter'
