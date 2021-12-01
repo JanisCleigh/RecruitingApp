@@ -1,52 +1,57 @@
 <template>
-    <lightning-card title="Positions">
-        <template if:true={statusValues}>
-            <lightning-combobox class="slds-size_1-of-12 slds-var-p-left_x-small" name="Select status"
-                label="Select status" placeholder="-Select status" value={selectedStatus} options={statusValues}
-                onchange={handleChange}>
-            </lightning-combobox>
-        </template>
-        <lightning-button class="slds-var-p-left_x-small" variant="brand" type="submit" label="Save">
-        </lightning-button>
-        <table
-            class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout slds-table_resizable-cols slds-table_col-bordered">
+    <lightning-card>
+        <div class="slds-card__header" style="background:#16325c">
+            <header class="slds-grid slds-gutters_x-small">
+                <div class="slds-col slds-grow-none">
+                    <div class="slds-var-m-top_large slds-text-heading_large slds-text-color_inverse">Positions
+                    </div>
+                </div>
+                <div class="slds-col slds-p-bottom_large slds-grow-none">
+                    <lightning-combobox value={selectedStatus} options={statusValues} onchange={handleChange}>
+                    </lightning-combobox>
+                </div>
+                <div class="slds-col slds-grow-none">
+                    <button class="slds-var-m-top_x-large slds-button slds-button_inverse"
+                        onclick={handleSave}>Save</button>
+                </div>
+            </header>
+        </div>
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-table_edit">
             <thead>
-                <tr class="slds-line-height_reset slds-var-p-around_xxx-small">
+                <tr class="slds-var-p-around_x-small slds-text-title_caps">
                     <th scope="col">
-                        <div align="center" class="slds-truncate" title="Position Name">Position Name</div>
+                        <div class="slds-truncate" title="Position Name">Position Name</div>
                     </th>
                     <th class="" scope="col">
-                        <div align="center" class="slds-truncate" title="Position Status">Position Status</div>
+                        <div class="slds-truncate" title="Position Status">Position Status</div>
                     </th>
                     <th class="" scope="col">
-                        <div align="center" class="slds-truncate" title="Min Salary">Min Salary</div>
+                        <div class="slds-truncate" title="Min Salary">Min Salary</div>
                     </th>
                     <th class="" scope="col">
-                        <div align="center" class="slds-truncate" title="Min Salary">Max Salary</div>
-                    </th>   
-                    <th class="" scope="col">
-                        <div align="center" class="slds-truncate" title="Open Date">Open Date</div>
+                        <div class="slds-truncate" title="Min Salary">Max Salary</div>
                     </th>
                     <th class="" scope="col">
-                        <div align="center" class="slds-truncate" title="Closing Date">Closing Date</div>
+                        <div class="slds-truncate" title="Open Date">Open Date</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Closing Date">Closing Date</div>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <template for:each={allPositions} for:item="position">
-                    <tr key={position.id} class="slds-var-p-around_xx-small">
-                        <td class="">
+                <template for:each={allPositions} for:item="position" for:index="index">
+                    <tr key={position.Id} class="slds-var-p-around_xx-small">
+                        <td>
                             <div>
                                 {position.Name}
                             </div>
                         </td>
-                        <td class="">
+                        <td>
                             <div>
-                                <lightning-record-edit-form object-api-name="Position__c">
-                                    <lightning-input-field variant="label-hidden" field-name="Status__c"
-                                        value={position.Status__c}>
-                                    </lightning-input-field>
-                                </lightning-record-edit-form>
+                                <lightning-combobox data-id={position.Id} name="StatusField" variant="label-hidden"
+                                    value={position.Status__c} options={fieldStatus} onchange={handleFieldStatus}>
+                                </lightning-combobox>
                             </div>
                         </td>
                         <td class="">
