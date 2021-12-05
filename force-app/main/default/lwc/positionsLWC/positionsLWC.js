@@ -4,27 +4,30 @@ import { getPicklistValues } from 'lightning/uiObjectInfoApi';
 import STATUS_FIELD from '@salesforce/schema/Position__c.Status__c';
 import updatePositions from '@salesforce/apex/PositionControllerLWC.updatePositions';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import {refreshApex} from '@salesforce/apex';
+import { refreshApex } from '@salesforce/apex';
 
 
 export default class PositionsLWC extends LightningElement {
     @track selectedStatus = '_%';
-    @track allPositions;
+    @api allPositions;
     @track error;
     @track statusValues;
     @track fieldStatus;
-
+    @track positionsToDisplay;
+    @api positionsOnPage = 5;
 
     connectedCallback() {
+       
         this.getPositionsList();
+
     }
 
     getPositionsList() {
         getAllPositions({ selectedStatus: this.selectedStatus })
-            .then(result => { this.allPositions = result; console.log(this.allPositions) })
+            .then(result => { this.allPositions = result;})
             .catch(error => { this.error = error; })
-    }
 
+    }
 
     @wire(getPicklistValues, {
         recordTypeId: '012000000000000AAA',
@@ -50,12 +53,11 @@ export default class PositionsLWC extends LightningElement {
     handleFieldStatus(event) {
         let element = this.allPositions.find(ele => ele.Id === event.target.dataset.id);
         element.Status__c = event.detail.value;
-        console.log(this.allPositions)
+
     }
 
-
     handleSave() {
-        console.log(this.allPositions)
+
         updatePositions({ posList: this.allPositions })
             .then(() => {
                 const event = new ShowToastEvent({
@@ -65,15 +67,19 @@ export default class PositionsLWC extends LightningElement {
                 });
                 this.dispatchEvent(event);
                 this.selectedStatus = '_%';
-              refreshApex(this.connectedCallback());
+                refreshApex(this.connectedCallback());
             });
-            
-      
-      
-              
+
     }
-    
+
+    handlePaginationChange(event) {
+        this.positionsToDisplay = [...event.detail.records]
+        console.log(event.detail.records)
+
+    }
+
 }
+
 
 
 

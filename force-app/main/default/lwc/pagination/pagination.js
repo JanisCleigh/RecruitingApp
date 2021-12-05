@@ -1,37 +1,70 @@
-import Details from '@salesforce/schema/RemoteKeyCalloutEvent.Details';
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 
 
 export default class Pagination extends LightningElement {
-    allData
 
-    @api recordsPerPage = 10;
-
+    currentPage = 1
+    totalRecords
+    @track totalPage = 0
+    @api recordsPerPage;
+    positionsPerPage
+      
     
+    get records() {
+        return this.visibleRecords
+        
+    }
+
     @api
-   /* set records(data) {
+    set records(data) {
         if (data) {
-            this.allData = data;
-            this.totalRecords = this.allData.length
-            this.visibleRecords = data.slice(0, this.recordsPerPage)
-            this.totalPages = Math.ceil(this.totalRecords / this.recordsPerPage);
-            this.paginationRecords();
-
+            this.totalRecords = data
+            console.log('data ' + data)
+            console.log(this.totalRecords)
+            console.log('recordsperpage ' + this.recordsPerPage)
+            this.totalPage = Math.ceil(data.length / this.recordsPerPage)
+            this.updateRecords()
+            console.log('get records ' + this.visibleRecords)
         }
-    }*/
+    }
+    get disablePrevious() {
+        return this.currentPage <= 1
+    }
+    get disableNext() {
+        return this.currentPage >= this.totalPage
+    }
 
-    handleNext() {
-        this.dispatchEvent(new CustomEvent('next'));
-
+    handlePageNumberChange(event) {
+        if (event.target.value > 0 && event.target.value <= this.totalPage && event.code === "Enter") {
+            this.currentPage = event.target.value;
+            this.updateRecords()
+        }
     }
 
     handlePrevious() {
-        this.dispatchEvent(new CustomEvent('previous'));
+        if (this.currentPage > 1) {
+            this.currentPage = this.currentPage - 1
+            this.updateRecords()
+        }
     }
 
+    handleNext() {
+        if (this.currentPage < this.totalPage) {
+            this.currentPage = Number(this.currentPage) + 1;
+            this.updateRecords()
+        }
+    }
 
-    
-   
+    updateRecords() {
+        const start = (this.currentPage - 1) * this.recordsPerPage
+        const end = this.recordsPerPage * this.currentPage
+        this.visibleRecords = this.totalRecords.slice(start, end)
+        this.dispatchEvent(new CustomEvent('paginationchange', {
+            detail: {
+                records: this.visibleRecords
+            }
+        }))
+    }
 
 
 }

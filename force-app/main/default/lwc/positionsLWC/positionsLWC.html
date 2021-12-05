@@ -16,71 +16,82 @@
                 </div>
             </header>
         </div>
-        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-table_edit">
-            <thead>
-                <tr class="slds-var-p-around_x-small slds-text-title_caps">
-                    <th scope="col">
-                        <div class="slds-truncate" title="Position Name">Position Name</div>
-                    </th>
-                    <th class="" scope="col">
-                        <div class="slds-truncate" title="Position Status">Position Status</div>
-                    </th>
-                    <th class="" scope="col">
-                        <div class="slds-truncate" title="Min Salary">Min Salary</div>
-                    </th>
-                    <th class="" scope="col">
-                        <div class="slds-truncate" title="Min Salary">Max Salary</div>
-                    </th>
-                    <th class="" scope="col">
-                        <div class="slds-truncate" title="Open Date">Open Date</div>
-                    </th>
-                    <th class="" scope="col">
-                        <div class="slds-truncate" title="Closing Date">Closing Date</div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <template for:each={allPositions} for:item="position" for:index="index">
-                    <tr key={position.Id} class="slds-var-p-around_xx-small">
-                        <td>
-                            <div>
-                                {position.Name}
-                            </div>
-                        </td>
-                        <td>
-                            <div>
-                                <lightning-combobox data-id={position.Id} name="StatusField" variant="label-hidden"
-                                    value={position.Status__c} options={fieldStatus} onchange={handleFieldStatus}>
-                                </lightning-combobox>
-                            </div>
-                        </td>
-                        <td class="">
-                            <div class="slds-truncate">
-                                {position.Min_Salary__c}
-                            </div>
-                        </td>
-                        <td class="">
-                            <div>
-                                {position.Max_Salary__c}
-                            </div>
-                        </td>
-                        <td class="">
-                            <div>
-                                <lightning-formatted-date-time value={position.Open_Date__c} year="numeric"
-                                    month="numeric" day="numeric" hour="2-digit" minute="2-digit">
-                                </lightning-formatted-date-time>
-                            </div>
-                        </td>
-                        <td class="">
-                            <div>
-                                <lightning-formatted-date-time value={position.Closing_Date__c} year="numeric"
-                                    month="numeric" day="numeric" hour="2-digit" minute="2-digit">
-                                </lightning-formatted-date-time>
-                            </div>
-                        </td>
+        <div>
+            <table
+                class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-table_edit">
+                <thead>
+                    <tr class="slds-var-p-around_x-small slds-text-title_caps">
+                        <th scope="col">
+                            <div class="slds-truncate" title="Position Name">Position Name</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Position Status">Position Status</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Min Salary">Min Salary</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Min Salary">Max Salary</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Open Date">Open Date</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Closing Date">Closing Date</div>
+                        </th>
                     </tr>
+                </thead>
+                <tbody>
+                    <template if:true={positionsToDisplay}>
+                        <template for:each={positionsToDisplay} for:item="position" for:index="index">
+                            <tr key={position.Id} class="slds-var-p-around_xx-small">
+                                <td>
+                                    <div>
+                                        {position.Name}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <lightning-combobox data-id={position.Id} name="StatusField"
+                                            variant="label-hidden" value={position.Status__c} options={fieldStatus}
+                                            onchange={handleFieldStatus}>
+                                        </lightning-combobox>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="slds-truncate">
+                                        {position.Min_Salary__c}
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div>
+                                        {position.Max_Salary__c}
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div>
+                                        <lightning-formatted-date-time value={position.Open_Date__c} year="numeric"
+                                            month="numeric" day="numeric" hour="2-digit" minute="2-digit">
+                                        </lightning-formatted-date-time>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div>
+                                        <lightning-formatted-date-time value={position.Closing_Date__c} year="numeric"
+                                            month="numeric" day="numeric" hour="2-digit" minute="2-digit">
+                                        </lightning-formatted-date-time>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </template>
+                </tbody>
+            </table>
+            <div slot="footer" class="slds-var-m-vertical_small">
+                <template if:true={positionsOnPage}>
+                    <c-pagination records={allPositions} records-per-page={positionsOnPage} onpaginationchange={handlePaginationChange}></c-pagination>
                 </template>
-            </tbody>
-        </table>
+            </div>
+        </div>
     </lightning-card>
 </template>

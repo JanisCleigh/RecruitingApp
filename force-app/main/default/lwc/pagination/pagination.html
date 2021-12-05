@@ -1,16 +1,16 @@
 <template>
-    <lightning-layout>
-        <lightning-layout-item>
-            <lightning-button label="Previous" icon-name="utility:chevronleft" onclick={handlePrevious}>
-            </lightning-button>
-        </lightning-layout-item>
-        <lightning-layout-item>
-           FeatureButtons
-        </lightning-layout-item>
-        <lightning-layout-item>
-            <lightning-button label="Next" icon-name="utility:chevronright" onclick={handleNext}></lightning-button>
-        </lightning-layout-item>
-
-
-    </lightning-layout>
+    <div class="slds-grid slds-grid_vertical-align-center slds-grid_align-center">
+        <lightning-button label="Previous" disabled={disablePrevious} icon-name="utility:chevronleft"
+            onclick={handlePrevious}>
+        </lightning-button>
+        &nbsp;
+        <lightning-input variant="label-hidden" style="width: 3rem;font-size: 20px;" type="number" min=1 max={totalPage}
+            value={currentPage} onkeypress={handlePageNumberChange}>
+        </lightning-input>
+        &nbsp;
+        <span>&nbsp;of&nbsp;</span><span class="slds-text-heading_medium">{totalPage}</span>
+        &nbsp;
+        <lightning-button label="Next" disabled={disableNext} icon-name="utility:chevronright" onclick={handleNext}>
+        </lightning-button>
+    </div>
 </template>
