@@ -5,26 +5,35 @@ import STATUS_FIELD from '@salesforce/schema/Position__c.Status__c';
 import updatePositions from '@salesforce/apex/PositionControllerLWC.updatePositions';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
+import getTotalNumberOfPositions from '@salesforce/apex/PositionControllerLWC.getTotalNumberOfPositions';
 
 
 export default class PositionsLWC extends LightningElement {
     @track selectedStatus = '_%';
-    @api allPositions;
+    @track allPositions;
     @track error;
-    @track statusValues;
+    @track statusValues = [{ label: 'All', value: '_%' }];
     @track fieldStatus;
-    @track positionsToDisplay;
-    @api positionsOnPage = 5;
+    @api positionsOnPage = 0;
+    @track offsetPositions = 0;
+    @track pageNumber = 1;
+    totalNumberOfPositions = 0;
+
 
     connectedCallback() {
-       
+
         this.getPositionsList();
 
     }
 
     getPositionsList() {
-        getAllPositions({ selectedStatus: this.selectedStatus })
-            .then(result => { this.allPositions = result;})
+        getTotalNumberOfPositions({ selectedStatus: this.selectedStatus })
+            .then(result => { this.totalNumberOfPositions = result });
+
+        this.offsetPositions = (this.pageNumber - 1) * this.positionsOnPage;
+
+        getAllPositions({ selectedStatus: this.selectedStatus, positionsOnPage: this.positionsOnPage, offsetPositions: this.offsetPositions })
+            .then(result => { this.allPositions = result })
             .catch(error => { this.error = error; })
 
     }
@@ -34,10 +43,8 @@ export default class PositionsLWC extends LightningElement {
         fieldApiName: STATUS_FIELD
     }) wiredStatusValues({ error, data }) {
         if (data) {
-            this.statusValues = data.values
-            this.fieldStatus = data.values
-            this.statusValues = Object.assign([], this.statusValues)
-            this.statusValues.unshift({ label: 'All', value: '_%' });
+            this.statusValues = [...this.statusValues, ...data.values]
+            this.fieldStatus = data.values;
             if (error) {
                 console.error(error)
             }
@@ -69,13 +76,12 @@ export default class PositionsLWC extends LightningElement {
                 this.selectedStatus = '_%';
                 refreshApex(this.connectedCallback());
             });
-
     }
 
     handlePaginationChange(event) {
-        this.positionsToDisplay = [...event.detail.records]
-        console.log(event.detail.records)
-
+        this.pageNumber = event.detail;
+        this.getPositionsList()
+        console.log(event.detail)
     }
 
 }

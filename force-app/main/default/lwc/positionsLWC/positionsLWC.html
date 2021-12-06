@@ -42,8 +42,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <template if:true={positionsToDisplay}>
-                        <template for:each={positionsToDisplay} for:item="position" for:index="index">
+                    <template if:true={allPositions}>
+                        <template for:each={allPositions} for:item="position" for:index="index">
                             <tr key={position.Id} class="slds-var-p-around_xx-small">
                                 <td>
                                     <div>
@@ -88,9 +88,8 @@
                 </tbody>
             </table>
             <div slot="footer" class="slds-var-m-vertical_small">
-                <template if:true={positionsOnPage}>
-                    <c-pagination records={allPositions} records-per-page={positionsOnPage} onpaginationchange={handlePaginationChange}></c-pagination>
-                </template>
+                <c-pagination current-page={pageNumber} total-records={totalNumberOfPositions}
+                    positions-per-page={positionsOnPage} onpaginationchange={handlePaginationChange}></c-pagination>
             </div>
         </div>
     </lightning-card>
