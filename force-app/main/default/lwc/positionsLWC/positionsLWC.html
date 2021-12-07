@@ -52,7 +52,7 @@
                                 </td>
                                 <td>
                                     <div>
-                                        <lightning-combobox data-id={position.Id} name="StatusField"
+                                        <lightning-combobox data-index={index} name="StatusField"
                                             variant="label-hidden" value={position.Status__c} options={fieldStatus}
                                             onchange={handleFieldStatus}>
                                         </lightning-combobox>

@@ -1,15 +1,16 @@
 <template>
     <div class="slds-grid slds-grid_vertical-align-center slds-grid_align-center">
-        <lightning-button disabled={disablePrevious} label="Prev" icon-name="utility:chevronleft"
+        <lightning-button disabled={disablePreviousButton} label="Prev" icon-name="utility:chevronleft"
             onclick={handlePrevious}>
         </lightning-button>
         &nbsp;
         <template for:each={buttonPageList} for:item="butn">
-            <lightning-button disabled={disableButtons} class="slds-p-horizontal_xxx-small" label={butn} key={butn} onclick={handleButtonPress}>
+            <lightning-button class="slds-p-horizontal_xxx-small" label={butn} key={butn} onclick={handleButtonPress}>
             </lightning-button>
         </template>
         &nbsp;
-        <lightning-button disabled={disableNext} label="Next" icon-name="utility:chevronright" onclick={handleNext}>
+        <lightning-button disabled={disableNextButton} label="Next" icon-name="utility:chevronright"
+            onclick={handleNext}>
         </lightning-button>
     </div>
 </template>

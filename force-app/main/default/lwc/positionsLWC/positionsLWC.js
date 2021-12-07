@@ -1,11 +1,13 @@
 import { LightningElement, api, wire, track } from 'lwc';
 import getAllPositions from '@salesforce/apex/PositionControllerLWC.getAllPositions';
 import { getPicklistValues } from 'lightning/uiObjectInfoApi';
+import { getObjectInfo } from 'lightning/uiObjectInfoApi';
+import POSITION_OBJECT from '@salesforce/schema/Position__c';
 import STATUS_FIELD from '@salesforce/schema/Position__c.Status__c';
 import updatePositions from '@salesforce/apex/PositionControllerLWC.updatePositions';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { refreshApex } from '@salesforce/apex';
 import getTotalNumberOfPositions from '@salesforce/apex/PositionControllerLWC.getTotalNumberOfPositions';
+
 
 
 export default class PositionsLWC extends LightningElement {
@@ -18,32 +20,46 @@ export default class PositionsLWC extends LightningElement {
     @track offsetPositions = 0;
     @track pageNumber = 1;
     totalNumberOfPositions = 0;
+    @track objectInfo;
 
 
     connectedCallback() {
-
-        this.getPositionsList();
+       
+        this.loadPositionsList();
 
     }
 
-    getPositionsList() {
+    loadPositionsList() {
         getTotalNumberOfPositions({ selectedStatus: this.selectedStatus })
-            .then(result => { this.totalNumberOfPositions = result });
+            .then(result => {
+                this.totalNumberOfPositions = result
+            });
 
         this.offsetPositions = (this.pageNumber - 1) * this.positionsOnPage;
 
-        getAllPositions({ selectedStatus: this.selectedStatus, positionsOnPage: this.positionsOnPage, offsetPositions: this.offsetPositions })
-            .then(result => { this.allPositions = result })
-            .catch(error => { this.error = error; })
+        getAllPositions({
+            selectedStatus: this.selectedStatus,
+            positionsOnPage: this.positionsOnPage,
+            offsetPositions: this.offsetPositions
+        })
+            .then(result => {
+                this.allPositions = result
+            })
+            .catch(error => {
+                this.error = error;
+            })
 
     }
 
+    @wire(getObjectInfo, { objectApiName: POSITION_OBJECT })
+    objectInfo;
+
     @wire(getPicklistValues, {
-        recordTypeId: '012000000000000AAA',
+        recordTypeId: '$objectInfo.data.defaultRecordTypeId',
         fieldApiName: STATUS_FIELD
     }) wiredStatusValues({ error, data }) {
         if (data) {
-            this.statusValues = [...this.statusValues, ...data.values]
+            this.statusValues = [...this.statusValues, ...data.values];
             this.fieldStatus = data.values;
             if (error) {
                 console.error(error)
@@ -53,19 +69,20 @@ export default class PositionsLWC extends LightningElement {
 
     handleChange(event) {
         this.selectedStatus = event.detail.value;
-        console.log(this.selectedStatus)
-        this.getPositionsList()
+        this.pageNumber = 1;
+        this.loadPositionsList()
     }
 
     handleFieldStatus(event) {
-        let element = this.allPositions.find(ele => ele.Id === event.target.dataset.id);
-        element.Status__c = event.detail.value;
+        this.allPositions[event.target.dataset.index].Status__c = event.detail.value;
 
     }
 
     handleSave() {
 
-        updatePositions({ posList: this.allPositions })
+        updatePositions({
+            posList: this.allPositions
+        })
             .then(() => {
                 const event = new ShowToastEvent({
                     title: 'Success',
@@ -74,13 +91,15 @@ export default class PositionsLWC extends LightningElement {
                 });
                 this.dispatchEvent(event);
                 this.selectedStatus = '_%';
-                refreshApex(this.connectedCallback());
+                this.pageNumber = 1;
+                this.loadPositionsList();
+
             });
     }
 
     handlePaginationChange(event) {
         this.pageNumber = event.detail;
-        this.getPositionsList()
+        this.loadPositionsList()
         console.log(event.detail)
     }
 
