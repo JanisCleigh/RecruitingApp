@@ -1,6 +1,6 @@
 import { LightningElement, api, track } from 'lwc';
 
-const FIRSTPAGE = 1;
+const ONEPAGE = 1;
 
 export default class Pagination extends LightningElement {
 
@@ -24,16 +24,15 @@ export default class Pagination extends LightningElement {
                 disabled: index === this.currentPage
             });
         }
-        console.log(this.buttonList)
         return this.buttonList
     }
 
     get disablePreviousButton() {
-        return this.currentPage <= FIRSTPAGE || this.totalCountOfPages <= FIRSTPAGE;
+        return this.currentPage <= ONEPAGE || this.totalCountOfPages <= ONEPAGE;
     }
 
     get disableNextButton() {
-        return this.currentPage >= this.totalCountOfPages || this.totalCountOfPages <= FIRSTPAGE;
+        return this.currentPage >= this.totalCountOfPages || this.totalCountOfPages <= ONEPAGE;
     }
 
     handleButtonPress(event) {
@@ -42,15 +41,15 @@ export default class Pagination extends LightningElement {
     }
 
     handlePrevious() {
-        if (this.currentPage > FIRSTPAGE) {
-            this.currentPage = this.currentPage - FIRSTPAGE;
+        if (this.currentPage > ONEPAGE) {
+            this.currentPage = this.currentPage - ONEPAGE;
             this.doPaginate();
         }
     }
 
     handleNext() {
         if (this.currentPage < this.totalCountOfPages) {
-            this.currentPage = Number(this.currentPage) + FIRSTPAGE;
+            this.currentPage = Number(this.currentPage) + ONEPAGE;
             this.doPaginate();
         }
     }
