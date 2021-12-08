@@ -75,7 +75,6 @@ export default class PositionsLWC extends LightningElement {
 
     handleFieldStatus(event) {
         this.allPositions[event.target.dataset.index].Status__c = event.detail.value;
-
     }
 
     handleSave() {
@@ -100,7 +99,7 @@ export default class PositionsLWC extends LightningElement {
     handlePaginationChange(event) {
         this.pageNumber = event.detail;
         this.loadPositionsList()
-        console.log(event.detail)
+        
     }
 
 }

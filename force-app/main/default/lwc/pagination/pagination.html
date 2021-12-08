@@ -5,7 +5,7 @@
         </lightning-button>
         &nbsp;
         <template for:each={buttonPageList} for:item="butn">
-            <lightning-button class="slds-p-horizontal_xxx-small" label={butn} key={butn} onclick={handleButtonPress}>
+            <lightning-button disabled={butn.disabled} class="slds-p-horizontal_xxx-small" label={butn.label} key={butn.label} onclick={handleButtonPress}>
             </lightning-button>
         </template>
         &nbsp;
