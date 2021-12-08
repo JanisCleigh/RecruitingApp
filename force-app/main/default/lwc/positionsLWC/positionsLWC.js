@@ -7,10 +7,12 @@ import STATUS_FIELD from '@salesforce/schema/Position__c.Status__c';
 import updatePositions from '@salesforce/apex/PositionControllerLWC.updatePositions';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getTotalNumberOfPositions from '@salesforce/apex/PositionControllerLWC.getTotalNumberOfPositions';
+import { NavigationMixin } from 'lightning/navigation';
 
 
 
-export default class PositionsLWC extends LightningElement {
+export default class PositionsLWC extends NavigationMixin(LightningElement) {
+
     @track selectedStatus = '_%';
     @track allPositions;
     @track error;
@@ -24,9 +26,20 @@ export default class PositionsLWC extends LightningElement {
 
 
     connectedCallback() {
-       
-        this.loadPositionsList();
 
+        this.loadPositionsList();
+        
+
+    }
+
+    navigateToPosition(event) {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__recordPage',
+            attributes: {
+                recordId: event.target.dataset.id,
+                actionName: 'view'
+            }
+        });
     }
 
     loadPositionsList() {
@@ -99,7 +112,7 @@ export default class PositionsLWC extends LightningElement {
     handlePaginationChange(event) {
         this.pageNumber = event.detail;
         this.loadPositionsList()
-        
+
     }
 
 }

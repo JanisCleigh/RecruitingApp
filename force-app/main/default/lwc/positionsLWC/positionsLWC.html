@@ -47,7 +47,7 @@
                             <tr key={position.Id} class="slds-var-p-around_xx-small">
                                 <td>
                                     <div>
-                                        {position.Name}
+                                        <a data-id={position.Id} onclick={navigateToPosition}>{position.Name}</a>
                                     </div>
                                 </td>
                                 <td>
